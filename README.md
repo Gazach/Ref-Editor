@@ -7,10 +7,12 @@
 ## To-do List update: (7  july 2026)
 1. Make a window with OpenGL context with SDL3 and make sure it work normally. ✅
 
-2. Render a simple text so tff font is working
+2. Render a simple text so tff font is working. ✅
 
-3. Make a text buffer.
+3. Restruct the code.
 
-4. make a basic cursor (make sure it blink :p)
+4. Make a text buffer.
 
-4. make a input for keyboard.
+5. make a basic cursor (make sure it blink :p)
+
+6. make a input for keyboard.

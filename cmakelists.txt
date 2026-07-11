@@ -8,9 +8,11 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# This makes sure that the dynamic library goes into the build directory automatically.
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
+# Put the executable and runtime support files into the build-local bin folder.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(REF_RUNTIME_DIR "${CMAKE_BINARY_DIR}/bin")
 
 # Gather the source files.
 file(GLOB_RECURSE SOURCES
@@ -30,11 +32,21 @@ target_include_directories(ref PRIVATE
 
 target_link_libraries(ref PRIVATE SDL3::SDL3)
 
+add_custom_command(TARGET ref POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${REF_RUNTIME_DIR}/asset"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/config/config.json"
+        "${REF_RUNTIME_DIR}/config.json"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/asset"
+        "${REF_RUNTIME_DIR}/asset"
+    COMMENT "Copy runtime config and asset files into the bin output folder")
+
 if(WIN32)
     add_custom_command(TARGET ref POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             $<TARGET_RUNTIME_DLLS:ref>
-            $<TARGET_FILE_DIR:ref>
+            "${REF_RUNTIME_DIR}"
         COMMAND_EXPAND_LISTS
-        COMMENT "Copy SDL3 runtime DLLs next to the executable")
+        COMMENT "Copy SDL3 runtime DLLs into the bin output folder")
 endif()

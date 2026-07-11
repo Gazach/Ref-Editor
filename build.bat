@@ -23,6 +23,7 @@ set ROOT_DIR=%~dp0
 
 if not exist "%ROOT_DIR%build\%1" mkdir "%ROOT_DIR%build\%1"
 cd /d "%ROOT_DIR%build\%1"
+if not exist "%ROOT_DIR%build\%1\bin" mkdir "%ROOT_DIR%build\%1\bin"
 
 echo [cmake] Configuring %CMAKE_BUILD_TYPE% build...
 cmake -G "Ninja" ^
@@ -44,7 +45,8 @@ if errorlevel 1 (
 )
 
 echo [run] Running ref.exe...
-debug\ref.exe
+cd /d "%ROOT_DIR%build\%1\bin"
+ref.exe
 
 :end
 endlocal

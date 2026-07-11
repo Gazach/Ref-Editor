@@ -1,0 +1,16 @@
+{
+    "font_path": "asset/font.ttf",
+    "font_pixel_height": 32.0,
+
+    "atlas_width": 512,
+    "atlas_height": 512,
+    "first_char": 32,
+    "num_chars": 96,
+
+    "window_title": "stb_truetype + SDL3 + OpenGL",
+    "window_width": 900,
+    "window_height": 600,
+
+    "background_color": [0.11, 0.11, 0.13, 1.0],
+    "text_color":       [0.92, 0.92, 0.90, 1.0]
+}
