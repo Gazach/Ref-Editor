@@ -29,4 +29,9 @@ typedef struct {
    defaults, so callers can choose to continue anyway. */
 int config_load(const char *path, Config *out);
 
+/* If cfg->font_path is relative, resolves it against `base_path`
+   (e.g. the executable's directory) and rewrites cfg->font_path in place.
+   No-op if font_path is empty, already absolute, or base_path is empty. */
+void config_resolve_font_path(Config *cfg, const char *base_path);
+
 #endif /* CONFIG_H */

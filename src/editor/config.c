@@ -1,5 +1,6 @@
 #include "config.h"
 #include "../lib/cJSON/cJSON.h"
+#include "../common/path.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -140,4 +141,13 @@ int config_load(const char *path, Config *out) {
 
     cJSON_Delete(root);
     return 1;
+}
+
+void config_resolve_font_path(Config *cfg, const char *base_path) {
+    if (cfg->font_path[0] == '\0' || path_is_absolute(cfg->font_path)) return;
+    if (!base_path || !*base_path) return;
+
+    char resolved[1024];
+    path_join(resolved, sizeof(resolved), base_path, cfg->font_path);
+    copy_string(cfg->font_path, sizeof(cfg->font_path), resolved);
 }
